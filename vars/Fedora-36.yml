@@ -4,9 +4,9 @@ postgresql_bin_path: "/usr/pgsql-{{ postgresql_version }}"
 postgresql_config_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
 postgresql_daemon: postgresql-{{ postgresql_version }}
 postgresql_packages:
-  - postgresql-{{ postgresql_version }}
-  - postgresql-server-{{ postgresql_version }}
-  - postgresql-contrib-{{ postgresql_version }}
-  - postgresql-libs-{{ postgresql_version }}
+  - postgresql{{ postgresql_version }}
+  - postgresql{{ postgresql_version }}-server
+  - postgresql{{ postgresql_version }}-contrib
+  - postgresql{{ postgresql_version }}-libs
 postgresql_unix_socket_directories_mode: '0755'
 postgresql_python_library: python3-psycopg2
