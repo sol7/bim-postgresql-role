@@ -4,6 +4,10 @@
     disable_gpg_check: true
   when: postgresql_enablerepo
 
+- ansible.builtin.shell:
+    dnf -qy module disable postgresql
+  when: postgresql_enablerepo
+
 - ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
     state: present
@@ -12,8 +16,10 @@
     # to be installed, which breaks later Ansible runs on Fedora 30,
     # and affects system behavior in multiple ways.
     exclude: python-unversioned-command
+    update_cache: true
 
 - ansible.builtin.yum:
     name: "{{ postgresql_python_library }}"
     state: present
     enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
+    update_cache: true
