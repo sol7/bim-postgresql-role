@@ -1,25 +1,32 @@
 ---
+- ansible.builtin.stat:
+    path: '/etc/yum.repos.d/pgdg-redhat-all.repo'
+  register: repo_presente
+
 - ansible.builtin.yum:
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
     disable_gpg_check: true
-  when: postgresql_enablerepo
+  when: postgresql_enablerepo and not repo_presente.stat.exists
 
 - ansible.builtin.shell:
     dnf -qy module disable postgresql
-  when: postgresql_enablerepo
+  when: postgresql_enablerepo and not repo_presente.stat.exists
 
 - ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
     state: present
-    enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
-    # Don't let postgresql-contrib cause the /usr/bin/python symlink
-    # to be installed, which breaks later Ansible runs on Fedora 30,
-    # and affects system behavior in multiple ways.
-    exclude: python-unversioned-command
     update_cache: true
+  when: postgresql_enablerepo and not repo_presente.stat.exists
 
 - ansible.builtin.yum:
-    name: "{{ postgresql_python_library }}"
+    name:
+      - python3-pip
+      - python3-setuptools
     state: present
-    enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
     update_cache: true
+  when: postgresql_enablerepo and not repo_presente.stat.exists
+
+- ansible.builtin.pip:
+    name:
+      - psycopg2-binary
+  when: postgresql_enablerepo and not repo_presente.stat.exists

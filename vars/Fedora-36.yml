@@ -9,4 +9,3 @@ postgresql_packages:
   - postgresql{{ postgresql_version }}-contrib
   - postgresql{{ postgresql_version }}-libs
 postgresql_unix_socket_directories_mode: '0755'
-postgresql_python_library: python3-psycopg2
