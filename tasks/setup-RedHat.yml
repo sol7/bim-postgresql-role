@@ -1,6 +1,9 @@
 ---
-- name: Ensure PostgreSQL packages are installed.
-  yum:
+- ansible.builtin.yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
+  when: postgresql_enablerepo
+
+- ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
     state: present
     enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
@@ -9,8 +12,7 @@
     # and affects system behavior in multiple ways.
     exclude: python-unversioned-command
 
-- name: Ensure PostgreSQL Python libraries are installed.
-  yum:
+- ansible.builtin.yum:
     name: "{{ postgresql_python_library }}"
     state: present
     enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"

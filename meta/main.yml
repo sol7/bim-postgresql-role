@@ -1,28 +1,27 @@
 ---
 dependencies: []
-
 galaxy_info:
   role_name: postgresql
   author: FelipeDie
   description: PostgreSQL.
   company: "Bimachine"
   license: "Privada"
-  min_ansible_version: 2.14
+  min_ansible_version: '2.14'
   platforms:
     - name: EL
       versions:
-        - 7
-        - 8
-        - 9
+        - '7'
+        - '8'
+        - '9'
     - name: Fedora
       versions:
-        - 30
-        - 31
-        - 32
-        - 33
-        - 34
-        - 35
-        - 36
+        - '30'
+        - '31'
+        - '32'
+        - '33'
+        - '34'
+        - '35'
+        - '36'
   galaxy_tags:
     - database
     - postgresql
