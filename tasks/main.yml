@@ -9,8 +9,7 @@
 - include_tasks: initialize.yml
 - include_tasks: configure.yml
 
-- name: Ensure PostgreSQL is started and enabled on boot.
-  service:
+- ansible.builtin.systemd:
     name: "{{ postgresql_daemon }}"
     state: "{{ postgresql_service_state }}"
     enabled: "{{ postgresql_service_enabled }}"
