@@ -2,6 +2,7 @@
 # RHEL/CentOS only. Set a repository to use for PostgreSQL installation.
 postgresql_enablerepo: true
 postgresql_version: "12"
+caminho_do_cluster: "/var/lib/pgsql/{{ postgresql_version }}/data"
 
 # Set postgresql state when configuration changes are made. Recommended values:
 # `restarted` or `reloaded`
