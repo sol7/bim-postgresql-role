@@ -1,26 +1,26 @@
 ---
-- ansible.builtin.stat:
-    path: '/etc/yum.repos.d/pgdg-redhat-all.repo'
-  register: postgresql_version
+# - ansible.builtin.stat:
+#     path: '/etc/yum.repos.d/pgdg-redhat-all.repo'
+#   register: postgresql_version
 
-- ansible.builtin.stat:
-    path: "{{ caminho_do_cluster }}/PG_VERSION"
-  register: cluster_presente
+# - ansible.builtin.stat:
+#     path: "{{ caminho_do_cluster }}/PG_VERSION"
+#   register: cluster_presente
 
 - ansible.builtin.yum:
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
     disable_gpg_check: true
-  when: postgresql_enablerepo and not cluster_presente.stat.exists 
+  #when: postgresql_enablerepo and not cluster_presente.stat.exists 
 
 - ansible.builtin.shell:
     dnf -qy module disable postgresql
-  when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_version.stat.exists
 
 - ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
     state: present
     update_cache: true
-  when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_version.stat.exists
 
 - ansible.builtin.yum:
     name:
@@ -28,9 +28,9 @@
       - python3-setuptools
     state: present
     update_cache: true
-  when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_version.stat.exists
 
 - ansible.builtin.pip:
     name:
       - psycopg2-binary
-  when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_version.stat.exists
