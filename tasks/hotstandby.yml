@@ -1,0 +1,45 @@
+---
+# FIXME: muito engessado - melhorar felipedie21022023
+# - Cria o slot_replication no servidor master
+- community.postgresql.postgresql_slot:
+    name: "{{ postgresql_slot_nome }}"
+    login_host: "{{ postgresql_master }}"
+    port: '5432'
+    login_user: 'postgres'
+    login_password: 'postgres'
+    db: 'bi_machine_data_origins'
+    state: present
+
+# - Executa o pg_base_backup
+- ansible.builtin.shell: |
+    systemctl stop postgresql-{{ postgresql_version }}
+    rm -rf {{ caminho_do_cluster }}/*
+
+- ansible.builtin.shell:
+    /usr/pgsql-{{ postgresql_version }}/bin/pg_basebackup \
+      -S {{ postgresql_slot_nome }} \
+      -h {{ postgresql_master }} \
+      -U postgres \
+      -p 5432 \
+      -D {{ caminho_do_cluster }} \
+      -Fp -P -Xs -Rv
+  environment:
+    - PGPASSWORD: postgres
+  become: true
+  become_user: postgres
+
+# - Altera a replicação para asincrona
+- ansible.builtin.lineinfile:
+    dest: "{{ caminho_do_cluster }}/postgresql.auto.conf"
+    state: absent
+    regexp: '^primary_slot_name.*'
+
+# - Apaga o slot_replication no servidor master
+- community.postgresql.postgresql_slot:
+    name: "{{ postgresql_master }}"
+    login_host: 'dwmaster.interno'
+    port: '5432'
+    login_user: 'postgres'
+    login_password: 'postgres'
+    db: 'bi_machine_data_origins'
+    state: absent

@@ -14,6 +14,10 @@
     state: "{{ postgresql_service_state }}"
     enabled: "{{ postgresql_service_enabled }}"
 
+- include_tasks: 
+    hotstandby.yml
+  when: postgresql_master != ''
+
 # Configure PostgreSQL.
 - import_tasks: users.yml
 - import_tasks: databases.yml
