@@ -10,10 +10,13 @@
     db: 'bi_machine_data_origins'
     state: present
 
-# - Executa o pg_base_backup
-- ansible.builtin.shell: |
-    systemctl stop postgresql-{{ postgresql_version }}
-    rm -rf {{ caminho_do_cluster }}/*
+- ansible.builtin.systemd:
+    name: postgresql-{{ postgresql_version }}
+    state: started
+
+- ansible.builtin.file:
+    path: "{{ caminho_do_cluster }}/"
+    state: absent
 
 - ansible.builtin.shell:
     /usr/pgsql-{{ postgresql_version }}/bin/pg_basebackup \
@@ -33,6 +36,10 @@
     dest: "{{ caminho_do_cluster }}/postgresql.auto.conf"
     state: absent
     regexp: '^primary_slot_name.*'
+
+- ansible.builtin.systemd:
+    name: postgresql-{{ postgresql_version }}
+    state: started
 
 # - Apaga o slot_replication no servidor master
 - community.postgresql.postgresql_slot:
