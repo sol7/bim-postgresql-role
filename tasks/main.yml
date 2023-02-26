@@ -10,9 +10,9 @@
 - include_tasks: configure.yml
 
 - ansible.builtin.systemd:
-    name: "{{ postgresql_daemon }}"
-    state: "{{ postgresql_service_state }}"
-    enabled: "{{ postgresql_service_enabled }}"
+    name: postgresql-{{ postgresql_version }}
+    state: restarted
+    enabled: true
 
 - include_tasks: hotstandby.yml
   when: postgresql_master != ''
