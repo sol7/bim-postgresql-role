@@ -12,13 +12,13 @@
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_version }}
-    state: started
+    state: stopped
 
 - ansible.builtin.file:
     path: "{{ caminho_do_cluster }}/"
     state: absent
 
-- ansible.builtin.shell:
+- ansible.builtin.shell: |
     /usr/pgsql-{{ postgresql_version }}/bin/pg_basebackup \
       -S {{ postgresql_slot_nome }} \
       -h {{ postgresql_master }} \
@@ -39,12 +39,12 @@
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_version }}
-    state: started
+    state: restarted
 
 # - Apaga o slot_replication no servidor master
 - community.postgresql.postgresql_slot:
-    name: "{{ postgresql_master }}"
-    login_host: 'dwmaster.interno'
+    name: "{{ postgresql_slot_nome }}"
+    login_host: "{{ postgresql_master }}"
     port: '5432'
     login_user: 'postgres'
     login_password: 'postgres'

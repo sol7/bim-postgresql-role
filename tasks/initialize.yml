@@ -1,14 +1,8 @@
 ---
-- ansible.builtin.template:
-    src: postgres.sh.j2
-    dest: /etc/profile.d/postgres.sh
-    mode: 0644
-  notify: restart postgresql
-
 - ansible.builtin.file:
     path: "{{ postgresql_data_dir }}"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
+    owner: 'postgres'
+    group: 'postgres'
     state: directory
     mode: 0700
 
@@ -16,7 +10,15 @@
     path: "{{ postgresql_data_dir }}/PG_VERSION"
   register: pgdata_dir_version
 
-- ansible.builtin.command: "{{ postgresql_bin_path }}/initdb -D {{ postgresql_data_dir }}"
+- ansible.builtin.shell: |
+    export PGDATA={{ postgresql_data_dir }}
+    export PATH=$PATH:{{ postgresql_bin_path }}
+    "{{ postgresql_bin_path }}/initdb -D {{ postgresql_data_dir }}"
   when: not pgdata_dir_version.stat.exists
   become: true
-  become_user: "{{ postgresql_user }}"
+  become_user: 'postgres'
+
+- ansible.builtin.systemd:
+    name: postgresql-{{ postgresql_version }}
+    state: started
+    enabled: yes
