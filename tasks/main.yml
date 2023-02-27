@@ -2,11 +2,12 @@
 - ansible.builtin.include_tasks: instalacao.yml
 - ansible.builtin.include_tasks: inicializacao.yml
 - ansible.builtin.include_tasks: configuracao.yml
-- ansible.builtin.include_tasks: bases.yml
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_version }}
     state: restarted
+
+- ansible.builtin.include_tasks: bases.yml
 
 - ansible.builtin.include_tasks: secundario.yml
   when: postgresql_master != ''
