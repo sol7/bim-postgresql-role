@@ -4,7 +4,7 @@
   register: postgresql_repositorio
 
 - ansible.builtin.stat:
-    path: "{{ caminho_do_cluster }}/PG_VERSION"
+    path: "{{ postgresql_cluster_caminho }}/PG_VERSION"
   register: cluster_presente
 
 - ansible.builtin.yum:
