@@ -1,7 +1,8 @@
 ---
-- include_tasks: instalacao.yml
-- include_tasks: inicializacao.yml
-- include_tasks: configuracao.yml
+- ansible.builtin.include_tasks: instalacao.yml
+- ansible.builtin.include_tasks: inicializacao.yml
+- ansible.builtin.include_tasks: configuracao.yml
+- ansible.builtin.include_tasks: bases.yml
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_version }}
