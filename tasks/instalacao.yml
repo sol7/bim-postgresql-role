@@ -18,7 +18,11 @@
   #when: postgresql_enablerepo and not postgresql_version.stat.exists
 
 - ansible.builtin.yum:
-    name: "{{ postgresql_packages }}"
+    name: 
+      - postgresql{{ postgresql_version }}
+      - postgresql{{ postgresql_version }}-server
+      - postgresql{{ postgresql_version }}-contrib
+      - postgresql{{ postgresql_version }}-libs
     state: present
     update_cache: true
   #when: postgresql_enablerepo and not postgresql_version.stat.exists

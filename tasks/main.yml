@@ -1,27 +1,16 @@
 ---
-# Variable configuration.
-- include_tasks: variables.yml
+- include_tasks: instalacao.yml
+- include_tasks: inicializacao.yml
+- include_tasks: configuracao.yml
 
-# Setup/install tasks.
-- include_tasks: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- ansible.builtin.systemd:
+    name: postgresql-{{ postgresql_version }}
+    state: restarted
 
-- include_tasks: initialize.yml
-- include_tasks: configure.yml
+- include_tasks: hotstandby.yml
+  when: postgresql_master != ''
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_version }}
     state: restarted
     enabled: true
-
-- include_tasks: hotstandby.yml
-  when: postgresql_master != ''
-
-# Configure PostgreSQL.
-- import_tasks: users.yml
-- import_tasks: databases.yml
-- import_tasks: users_props.yml
-
-- ansible.builtin.systemd:
-    name: postgresql-{{ postgresql_version }}
-    state: restarted

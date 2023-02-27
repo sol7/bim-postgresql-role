@@ -1,6 +1,4 @@
 ---
-# FIXME: muito engessado - melhorar felipedie21022023
-# - Cria o slot_replication no servidor master
 - community.postgresql.postgresql_slot:
     name: "{{ postgresql_slot_nome }}"
     login_host: "{{ postgresql_master }}"
