@@ -5,8 +5,9 @@
     port: '5432'
     login_user: 'postgres'
     login_password: 'postgres'
-    db: 'bi_machine_data_origins'
+    db: "{{ item.name }}"
     state: present
+  with_items: "{{ postgresql_bases }}"
 
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_versao }}
@@ -48,5 +49,6 @@
     port: '5432'
     login_user: 'postgres'
     login_password: 'postgres'
-    db: 'bi_machine_data_origins'
+    db: "{{ item.name }}"
     state: absent
+  with_items: "{{ postgresql_bases }}"
