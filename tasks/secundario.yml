@@ -13,7 +13,7 @@
     state: stopped
 
 - ansible.builtin.file:
-    path: "{{ caminho_do_cluster }}/"
+    path: "{{ postgresql_cluster_caminho }}/"
     state: absent
 
 - ansible.builtin.shell: |
@@ -22,7 +22,7 @@
       -h {{ postgresql_master }} \
       -U postgres \
       -p 5432 \
-      -D {{ caminho_do_cluster }} \
+      -D {{ postgresql_cluster_caminho }} \
       -Fp -P -Xs -Rv
   environment:
     - PGPASSWORD: postgres
@@ -33,7 +33,7 @@
 
 # - Altera a replicação para asincrona
 - ansible.builtin.lineinfile:
-    dest: "{{ caminho_do_cluster }}/postgresql.auto.conf"
+    dest: "{{ postgresql_cluster_caminho }}/postgresql.auto.conf"
     state: absent
     regexp: '^primary_slot_name.*'
 
