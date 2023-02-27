@@ -2,7 +2,7 @@
 # FIXME: https://github.com/sol7/infra/issues/176
 # - ansible.builtin.stat:
 #     path: '/etc/yum.repos.d/pgdg-redhat-all.repo'
-#   register: postgresql_version
+#   register: postgresql_versao
 
 # - ansible.builtin.stat:
 #     path: "{{ caminho_do_cluster }}/PG_VERSION"
@@ -15,17 +15,17 @@
 
 - ansible.builtin.shell:
     dnf -qy module disable postgresql
-  #when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_versao.stat.exists
 
 - ansible.builtin.yum:
     name: 
-      - postgresql{{ postgresql_version }}
-      - postgresql{{ postgresql_version }}-server
-      - postgresql{{ postgresql_version }}-contrib
-      - postgresql{{ postgresql_version }}-libs
+      - postgresql{{ postgresql_versao }}
+      - postgresql{{ postgresql_versao }}-server
+      - postgresql{{ postgresql_versao }}-contrib
+      - postgresql{{ postgresql_versao }}-libs
     state: present
     update_cache: true
-  #when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_versao.stat.exists
 
 - ansible.builtin.yum:
     name:
@@ -33,9 +33,9 @@
       - python3-setuptools
     state: present
     update_cache: true
-  #when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_versao.stat.exists
 
 - ansible.builtin.pip:
     name:
       - psycopg2-binary
-  #when: postgresql_enablerepo and not postgresql_version.stat.exists
+  #when: postgresql_enablerepo and not postgresql_versao.stat.exists
