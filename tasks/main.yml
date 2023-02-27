@@ -6,13 +6,10 @@
 - ansible.builtin.systemd:
     name: postgresql-{{ postgresql_versao }}
     state: restarted
+    enabled: true
 
 - ansible.builtin.include_tasks: bases.yml
+  when: postgresql_master == ''
 
 - ansible.builtin.include_tasks: secundario.yml
   when: postgresql_master != ''
-
-- ansible.builtin.systemd:
-    name: postgresql-{{ postgresql_versao }}
-    state: restarted
-    enabled: true
