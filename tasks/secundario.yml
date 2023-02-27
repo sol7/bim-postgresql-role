@@ -9,7 +9,7 @@
     state: present
 
 - ansible.builtin.systemd:
-    name: postgresql-{{ postgresql_version }}
+    name: postgresql-{{ postgresql_versao }}
     state: stopped
 
 - ansible.builtin.file:
@@ -17,7 +17,7 @@
     state: absent
 
 - ansible.builtin.shell: |
-    /usr/pgsql-{{ postgresql_version }}/bin/pg_basebackup \
+    /usr/pgsql-{{ postgresql_versao }}/bin/pg_basebackup \
       -S {{ postgresql_slot_nome }} \
       -h {{ postgresql_master }} \
       -U postgres \
@@ -38,7 +38,7 @@
     regexp: '^primary_slot_name.*'
 
 - ansible.builtin.systemd:
-    name: postgresql-{{ postgresql_version }}
+    name: postgresql-{{ postgresql_versao }}
     state: restarted
 
 # - Apaga o slot_replication no servidor master
