@@ -26,6 +26,8 @@
       -Fp -P -Xs -Rv
   environment:
     - PGPASSWORD: postgres
+  args:
+    executable: /bin/bash
   become: true
   become_user: postgres
 

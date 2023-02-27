@@ -8,7 +8,7 @@
     name: postgresql-{{ postgresql_version }}
     state: restarted
 
-- include_tasks: hotstandby.yml
+- ansible.builtin.include_tasks: secundario.yml
   when: postgresql_master != ''
 
 - ansible.builtin.systemd:
