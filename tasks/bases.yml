@@ -8,4 +8,4 @@
     login_host: '127.0.0.1'
     login_user: 'postgres'
     port: 5432
-  with_items: "{{ postgresql_databases }}"
+  with_items: "{{ postgresql_bases }}"
