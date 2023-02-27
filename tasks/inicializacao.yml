@@ -11,7 +11,9 @@
   register: cluster_inicializado
 
 - ansible.builtin.shell: |
-    "/usr/pgsql-{{ postgresql_versao }}/bin/initdb -D {{ postgresql_cluster_caminho }}"
+    /usr/pgsql-{{ postgresql_versao }}/bin/initdb -D {{ postgresql_cluster_caminho }}
+  args:
+    executable: /bin/bash
   when: not cluster_inicializado.stat.exists
   become: true
   become_user: 'postgres'
