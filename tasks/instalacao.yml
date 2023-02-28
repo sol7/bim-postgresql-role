@@ -7,7 +7,7 @@
     path: "{{ postgresql_cluster_caminho }}/PG_VERSION"
   register: cluster_presente
 
-- ansible.builtin.yum:
+- ansible.builtin.dnf:
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
     disable_gpg_check: true
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
@@ -16,22 +16,18 @@
     dnf -qy module disable postgresql
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
-- ansible.builtin.yum:
+- ansible.builtin.dnf:
     name: 
       - postgresql{{ postgresql_versao }}
       - postgresql{{ postgresql_versao }}-server
       - postgresql{{ postgresql_versao }}-contrib
       - postgresql{{ postgresql_versao }}-libs
-    state: present
-    update_cache: true
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
-- ansible.builtin.yum:
+- ansible.builtin.dnf:
     name:
       - python3-pip
       - python3-setuptools
-    state: present
-    update_cache: true
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.pip:
