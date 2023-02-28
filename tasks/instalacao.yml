@@ -10,7 +10,7 @@
 - ansible.builtin.dnf:
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
     disable_gpg_check: true
-    state: 'present'
+    state: 'latest'
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.shell:
