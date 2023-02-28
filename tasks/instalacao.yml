@@ -9,6 +9,7 @@
 
 - ansible.builtin.dnf:
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm
+    update_cache: true
     disable_gpg_check: true
     state: 'present'
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
@@ -23,6 +24,7 @@
       - postgresql{{ postgresql_versao }}-server
       - postgresql{{ postgresql_versao }}-contrib
       - postgresql{{ postgresql_versao }}-libs
+    update_cache: true
     disable_gpg_check: true
     state: 'present'
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
@@ -31,6 +33,7 @@
     name:
       - python3-pip
       - python3-setuptools
+    update_cache: true
     disable_gpg_check: true
     state: 'present'
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
