@@ -13,7 +13,7 @@
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.shell:
-    dnf -qy module disable postgresql
+    dnf --nogpgcheck -qy module disable postgresql
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.dnf:
@@ -22,12 +22,14 @@
       - postgresql{{ postgresql_versao }}-server
       - postgresql{{ postgresql_versao }}-contrib
       - postgresql{{ postgresql_versao }}-libs
+    disable_gpg_check: true
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.dnf:
     name:
       - python3-pip
       - python3-setuptools
+    disable_gpg_check: true
   when: ((postgresql_repositorio) and (not cluster_presente.stat.exists))
 
 - ansible.builtin.pip:
